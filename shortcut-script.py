@@ -1,0 +1,195 @@
+import requests
+import json
+from typing import Optional, List, Dict, Any
+
+# Constants
+API_URL = 'https://api.app.shortcut.com/api/v3'
+TOKEN = '<Your token>'
+
+PROJECT_NAME = "Backend"  # | "Frontend", Can be partial name
+EPIC_NAME = "Support SSO"  # Can be partial name
+ITERATION_NAME = "082"  # Can be partial name
+DEFAULT_STATE = "Scheduled for iteration"
+
+HEADERS = {
+    'Shortcut-Token': TOKEN,
+    'Content-Type': 'application/json'
+}
+
+
+def fetch_projects(name: Optional[str] = None):
+    url = f"{API_URL}/projects"
+    response = requests.get(url, headers=HEADERS)
+    projects = [
+        {
+            "id": item.get('id'),
+            "project_name": item.get('name')
+        }
+        for item in response.json()
+    ]
+    if name:
+        projects = [project for project in projects if name.lower()
+                    in project['project_name'].lower()]
+    return projects
+
+
+def fetch_epics(name: Optional[str] = None):
+    url = f"{API_URL}/epics"
+    response = requests.get(url, headers=HEADERS)
+    epics = [
+        {
+            "id": item.get('id'),
+            "epic_name": item.get('name')
+        }
+        for item in response.json()
+    ]
+    if name:
+        epics = [epic for epic in epics if name.lower()
+                 in epic['epic_name'].lower()]
+    return epics
+
+
+def fetch_iterations(name: Optional[str] = None):
+    url = f"{API_URL}/iterations"
+    response = requests.get(url, headers=HEADERS)
+    iterations = [
+        {
+            "id": item.get('id'),
+            "iteration_name": item.get('name')
+        }
+        for item in response.json()
+    ]
+    if name:
+        iterations = [iteration for iteration in iterations if name.lower(
+        ) in iteration['iteration_name'].lower()]
+    return iterations
+
+
+def fetch_workflows():
+    url = f"{API_URL}/workflows"
+    response = requests.get(url, headers=HEADERS)
+    return response.json()
+
+
+def find_workflow_state_id(workflows: List[Dict[str, Any]], state_name: str) -> int:
+    for workflow in workflows:
+        for state in workflow.get('states', []):
+            if state_name.lower() == state['name'].lower():
+                return state['id']
+    raise ValueError(f"Workflow state '{state_name}' not found")
+
+
+def create_ticket(title: str, description: str, epic_id: Optional[int] = None, estimate: Optional[int] = None,
+                  story_type: Optional[str] = None, tasks: Optional[List[Dict[str, Any]]] = None,
+                  project_id: Optional[int] = None, iteration_id: Optional[int] = None,
+                  workflow_state_name: Optional[str] = None):
+    url = f"{API_URL}/stories"
+
+    # Fetch project_id by PROJECT_NAME if not provided
+    if not project_id:
+        projects = fetch_projects(PROJECT_NAME)
+        if projects:
+            project_id = projects[0]['id']
+        else:
+            raise ValueError(f"Project '{PROJECT_NAME}' not found")
+
+    # Fetch epic_id by EPIC_NAME if not provided
+    if not epic_id:
+        epics = fetch_epics(EPIC_NAME)
+        if epics:
+            epic_id = epics[0]['id']
+        else:
+            raise ValueError(f"Epic '{EPIC_NAME}' not found")
+
+    # Fetch iteration_id by ITERATION_NAME if not provided
+    if not iteration_id:
+        iterations = fetch_iterations(ITERATION_NAME)
+        if iterations:
+            iteration_id = iterations[0]['id']
+        else:
+            raise ValueError(f"Iteration '{ITERATION_NAME}' not found")
+
+    # Use DEFAULT_STATE if workflow_state_name is not provided
+    if not workflow_state_name:
+        workflow_state_name = DEFAULT_STATE
+
+    payload = {
+        "description": description,
+        "name": title,
+        "project_id": project_id,
+    }
+
+    optional_fields = ['epic_id', 'estimate',
+                       'story_type', 'tasks', 'iteration_id']
+    for field in optional_fields:
+        if locals()[field] is not None:
+            payload[field] = locals()[field]
+
+    workflows = fetch_workflows()
+    workflow_state_id = find_workflow_state_id(
+        workflows, workflow_state_name)
+    payload['workflow_state_id'] = workflow_state_id
+
+    response = requests.post(url, headers=HEADERS, data=json.dumps(payload))
+    return response.json()
+
+
+def examples():
+    # Fetch projects
+    print("Projects:")
+    projects = fetch_projects()
+    print(projects)
+
+    # Fetch projects with name filter
+    print("\nFiltered Projects:")
+    filtered_projects = fetch_projects(name="sample")
+    print(filtered_projects)
+
+    # Fetch epics
+    print("\nEpics:")
+    epics = fetch_epics()
+    print(epics)
+
+    # Fetch epics with name filter
+    print("\nFiltered Epics:")
+    filtered_epics = fetch_epics(name="sample")
+    print(filtered_epics)
+
+    # Fetch iterations
+    print("\nIterations:")
+    iterations = fetch_iterations()
+    print(iterations)
+
+    # Fetch iterations with name filter
+    print("\nFiltered Iterations:")
+    filtered_iterations = fetch_iterations(name="sample")
+    print(filtered_iterations)
+
+    # Fetch workflows
+    print("\nWorkflows:")
+    workflows = fetch_workflows()
+    print(workflows)
+
+    # Create a ticket
+    print("\nCreating a ticket:")
+    new_ticket = create_ticket(
+        title="Sample Ticket",
+        description="This is a test ticket created via API",
+        estimate=3,
+        story_type="feature",
+        workflow_state_name="In Development"
+    )
+    print(new_ticket)
+
+
+if __name__ == "__main__":
+    pass
+
+"""
+INSTRUCTIONS FOR CHATGPT:
+
+Your job is to modify the __name__ == "__main__" block in the script.py file and create the tickets exactly as instructed. 
+
+If provided overrides for epic, iteration, and project, use them. Otherwise, use the default values provided in the script.py file.
+Reply only with the changed if __name__ == "__main__" block in the script.
+"""
