@@ -4,7 +4,7 @@ from typing import Optional, List, Dict, Any
 
 # Constants
 API_URL = 'https://api.app.shortcut.com/api/v3'
-TOKEN = '<Your token>'
+TOKEN = '<YOUR_API_TOKEN>'
 
 PROJECT_NAME = "Backend"  # | "Frontend", Can be partial name
 EPIC_NAME = "Support SSO"  # Can be partial name
@@ -82,7 +82,7 @@ def find_workflow_state_id(workflows: List[Dict[str, Any]], state_name: str) -> 
 def create_ticket(title: str, description: str, epic_id: Optional[int] = None, estimate: Optional[int] = None,
                   story_type: Optional[str] = None, tasks: Optional[List[Dict[str, Any]]] = None,
                   project_id: Optional[int] = None, iteration_id: Optional[int] = None,
-                  workflow_state_name: Optional[str] = None):
+                  workflow_state_name: Optional[str] = None, linked_ticket_id: Optional[int] = None):
     url = f"{API_URL}/stories"
 
     # Fetch project_id by PROJECT_NAME if not provided
@@ -130,6 +130,13 @@ def create_ticket(title: str, description: str, epic_id: Optional[int] = None, e
         workflows, workflow_state_name)
     payload['workflow_state_id'] = workflow_state_id
 
+    # Add linked ticket if provided
+    if linked_ticket_id:
+        payload['story_links'] = [{
+            "subject_id": linked_ticket_id,
+            "verb": "blocks"
+        }]
+
     response = requests.post(url, headers=HEADERS, data=json.dumps(payload))
     return response.json()
 
@@ -170,20 +177,37 @@ def examples():
     workflows = fetch_workflows()
     print(workflows)
 
-    # Create a ticket
-    print("\nCreating a ticket:")
-    new_ticket = create_ticket(
-        title="Sample Ticket",
-        description="This is a test ticket created via API",
-        estimate=3,
-        story_type="feature",
-        workflow_state_name="In Development"
-    )
-    print(new_ticket)
+    # Create tickets and link them
+    created_tickets = []
+    print("\nCreating tickets:")
+    tickets_to_create = [
+        {"title": "Ticket 1", "description": "Description for ticket 1"},
+        {"title": "Ticket 2", "description": "Description for ticket 2"},
+    ]
+
+    for i, ticket in enumerate(tickets_to_create):
+        linked_ticket_id = created_tickets[-1]['id'] if created_tickets else None
+        new_ticket = create_ticket(
+            title=ticket["title"],
+            description=ticket["description"],
+            estimate=3,
+            story_type="feature",
+            workflow_state_name="In Development",
+            linked_ticket_id=linked_ticket_id
+        )
+        created_tickets.append(new_ticket)
+        print(
+            f"Created ticket: {new_ticket['name']} - URL: {new_ticket['app_url']}")
+
+    if len(created_tickets) > 1:
+        print("\nLinked tickets:")
+        for i in range(1, len(created_tickets)):
+            print(
+                f"{created_tickets[i-1]['name']} blocks {created_tickets[i]['name']}")
 
 
 if __name__ == "__main__":
-    pass
+    examples()
 
     """
     INSTRUCTIONS FOR CHATGPT:
