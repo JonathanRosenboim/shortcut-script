@@ -17,7 +17,7 @@ DEFAULT_STATE = "Scheduled for iteration"
 - Include all the relevant information from the design in a clear, bullet-point and easy to understand way. This also includes:
   - Relevant code samples
   - Link to Figma, if available / relevant
-  - Link to Lucidchard, if avaialble / relevantr
+  - Link to Lucidchard, if available / relevant
   - Any other relevant links besides a Shortcut epic
   - Any examples and design explanations provided in the document
 - Include all the things that must be achieved, After the relevant background information.
@@ -101,35 +101,38 @@ def find_workflow_state_id(workflows: List[Dict[str, Any]], state_name: str) -> 
     raise ValueError(f"Workflow state '{state_name}' not found")
 
 
-def create_ticket(title: str, description: str, epic_id: Optional[int] = None, estimate: Optional[int] = None,
+def create_ticket(title: str, description: str, epic_name: Optional[str] = None, estimate: Optional[int] = None,
                   story_type: Optional[str] = None, tasks: Optional[List[Dict[str, Any]]] = None,
-                  project_id: Optional[int] = None, iteration_id: Optional[int] = None,
+                  project_name: Optional[str] = None, iteration_name: Optional[str] = None,
                   workflow_state_name: Optional[str] = None, linked_ticket_id: Optional[int] = None):
     url = f"{API_URL}/stories"
 
-    # Fetch project_id by PROJECT_NAME if not provided
-    if not project_id:
-        projects = fetch_projects(PROJECT_NAME)
-        if projects:
-            project_id = projects[0]['id']
-        else:
-            raise ValueError(f"Project '{PROJECT_NAME}' not found")
+    # Fetch project_id by project_name if not provided
+    if not project_name:
+        project_name = PROJECT_NAME
+    projects = fetch_projects(project_name)
+    if projects:
+        project_id = projects[0]['id']
+    else:
+        raise ValueError(f"Project '{project_name}' not found")
 
-    # Fetch epic_id by EPIC_NAME if not provided
-    if not epic_id:
-        epics = fetch_epics(EPIC_NAME)
-        if epics:
-            epic_id = epics[0]['id']
-        else:
-            raise ValueError(f"Epic '{EPIC_NAME}' not found")
+    # Fetch epic_id by epic_name if not provided
+    if not epic_name:
+        epic_name = EPIC_NAME
+    epics = fetch_epics(epic_name)
+    if epics:
+        epic_id = epics[0]['id']
+    else:
+        raise ValueError(f"Epic '{epic_name}' not found")
 
-    # Fetch iteration_id by ITERATION_NAME if not provided
-    if not iteration_id:
-        iterations = fetch_iterations(ITERATION_NAME)
-        if iterations:
-            iteration_id = iterations[0]['id']
-        else:
-            raise ValueError(f"Iteration '{ITERATION_NAME}' not found")
+    # Fetch iteration_id by iteration_name if not provided
+    if not iteration_name:
+        iteration_name = ITERATION_NAME
+    iterations = fetch_iterations(iteration_name)
+    if iterations:
+        iteration_id = iterations[0]['id']
+    else:
+        raise ValueError(f"Iteration '{iteration_name}' not found")
 
     # Use DEFAULT_STATE if workflow_state_name is not provided
     if not workflow_state_name:
