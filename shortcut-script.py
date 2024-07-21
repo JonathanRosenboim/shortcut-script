@@ -185,11 +185,13 @@ def examples():
 if __name__ == "__main__":
     pass
 
-"""
-INSTRUCTIONS FOR CHATGPT:
+    """
+    INSTRUCTIONS FOR CHATGPT:
 
-Your job is to modify the __name__ == "__main__" block in the script.py file and create the tickets exactly as instructed. 
+    Your job is to modify the __name__ == "__main__" block in the script.py file and create the tickets exactly as instructed. 
 
-If provided overrides for epic, iteration, and project, use them. Otherwise, use the default values provided in the script.py file.
-Reply only with the changed if __name__ == "__main__" block in the script.
-"""
+    If provided overrides for epic, iteration, and project, use them. Otherwise, use the default values provided in the script.py file.
+    Reply only with the changed if __name__ == "__main__" block in the script. Make sure the script prints the URLs and title of each ticket created, and list any failed tickets if any.
+
+    In your response, keep those instructions in the script so it can be resused next time if the script remains in the same file.
+    """
