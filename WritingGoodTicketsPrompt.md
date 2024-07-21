@@ -9,37 +9,18 @@
 - Include all the things that must be achieved, After the relevant background information.
 - Include the relevant DoD checks in a special "DoD" section in the end.
 
-The ticket must use simple language and be clear and concise, but include all the relevant information for it.
-Your job is to use the provided script to create the tickets. However, the flow will be as follows:
+The ticket must use simple language and be clear, but include all the relevant information for it. Spare no detail. The info should be a combination of paragraphs and bullet points.
 
-1. If the user didn't provide the current epic / iteration / project, ask them to provide it. When you ask, provide an example from the script and mention that it can be a partial name too.
-2. Write the content of the tickets and their titles, as well as all the relevant information such as epic, estimations, project and such that are needed
-3. Ask the user to approve the tickets before you send the creation script
-4. Return the modified if name = main section as instructed with the ticket creation to the user.
+If the provided description already has clear tasks, include ALL the information from each task in the ticket, spare no detail. Use exactly the same text as much as possible.
 
----
-
-INSTRUCTIONS FOR CHATGPT:
-
-Your job is to modify the **name** == "**main**" block in the script.py file and create the tickets exactly as instructed.
-
-### How to write a good ticket
-
-- Include all the relevant information from the design in a clear and easy to understand way. This also includes:
-  - Relevant code samples
-  - Link to Figma, if available / relevant
-  - Link to Lucidchard, if avaialble / relevantr
-  - Any examples and design explanations provided in the document
-- Include all the things that must be achieved, After the relevant background information.
-- Include the relevant DoD checks in a special "DoD" section in the end.
-
-Even if there's a "ticket" section in the end, be sure to include the relevant information from earlier parts of the design as well.
-
-The ticket must use simple language and be clear and concise, but include all the relevant information for it. The general expected structure is:
+A good ticket structure:
 
 ### Relevant links: (ONLY IF RELEVANT)
 
 Attach if possible / link any relevant links here, do NOT put the epic / shortcut links here.
+
+Links for Figma and Lucidchart must be just the plain links, no '[](..link)', since we use Shortcut which handles their attachment automatically. So just https://figma....
+Do NOT put these links in bullet lists, as that way the attachment doesn't work. Just one line under another.
 
 ### Background:
 
@@ -53,10 +34,4 @@ Attach if possible / link any relevant links here, do NOT put the epic / shortcu
 
 < Clear bullet point list of what needs to be checked before the ticket is considered done >
 
-Your job is to use the provided script to create the tickets. However, the flow will be as follows:
-
-1. If the user didn't provide the current epic / iteration / project, ask them to provide it. When you ask, provide an example from the script and mention that it can be a partial name too.
-2. Write the content of the tickets and their titles, as well as all the relevant information such as epic, estimations, project and such that are needed
-3. Ask the user to approve the tickets before you send the creation script - This is very important. Write them in the response in clear text BEFORE you send the script.
-4. Reply with the changed if **name** == "**main**" block in the script. Make sure the script prints the URLs and title of each ticket created, and list any failed tickets if any. Be sure to create the tickets in the epic the user asked for (and the project and the iteration)
-   - Make them block each other ONLY if the user explicitly ask for it, and only where they asked for it.
+Please provide the tickets from the provided info. Separate them with ---.

@@ -243,4 +243,6 @@ if __name__ == "__main__":
     Reply only with the changed if __name__ == "__main__" block in the script. Make sure the script prints the URLs and title of each ticket created, and list any failed tickets if any.
 
     In your response, keep those instructions in the script so it can be resused next time if the script remains in the same file.
-    """
+    
+    If the user didn't provide a project, epic, or iteration, ask them to provide it IN THE CHAT, before replying with the code. 
+"""
