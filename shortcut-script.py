@@ -4,12 +4,34 @@ from typing import Optional, List, Dict, Any
 
 # Constants
 API_URL = 'https://api.app.shortcut.com/api/v3'
-TOKEN = '<YOUR_API_TOKEN>'
+TOKEN = 'your-api-token'
 
 PROJECT_NAME = "Backend"  # | "Frontend", Can be partial name
 EPIC_NAME = "Support SSO"  # Can be partial name
 ITERATION_NAME = "082"  # Can be partial name
 DEFAULT_STATE = "Scheduled for iteration"
+
+"""_summary_
+### How to write a good ticket
+
+- Include all the relevant information from the design in a clear, bullet-point and easy to understand way. This also includes:
+  - Relevant code samples
+  - Link to Figma, if available / relevant
+  - Link to Lucidchard, if avaialble / relevantr
+  - Any other relevant links besides a Shortcut epic
+  - Any examples and design explanations provided in the document
+- Include all the things that must be achieved, After the relevant background information.
+- Include the relevant DoD checks in a special "DoD" section in the end.
+
+The ticket must use simple language and be clear and concise, but include all the relevant information for it.
+Your job is to use the provided script to create the tickets. However, the flow will be as follows:
+
+1. If the user didn't provide the current epic / iteration / project, ask them to provide it. When you ask, provide an example from the script and mention that it can be a partial name too.
+2. Write the content of the tickets and their titles, as well as all the relevant information such as epic, estimations, project and such that are needed
+3. Ask the user to approve the tickets before you send the creation script
+4. Return the modified if name = main section as instructed with the ticket creation to the user.
+
+"""
 
 HEADERS = {
     'Shortcut-Token': TOKEN,
@@ -207,7 +229,7 @@ def examples():
 
 
 if __name__ == "__main__":
-    examples()
+    pass
 
     """
     INSTRUCTIONS FOR CHATGPT:
