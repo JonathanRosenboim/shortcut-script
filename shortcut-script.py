@@ -4,7 +4,7 @@ from typing import Optional, List, Dict, Any
 
 # Constants
 API_URL = 'https://api.app.shortcut.com/api/v3'
-TOKEN = 'your-api-token'
+TOKEN = '<token>'
 
 PROJECT_NAME = "Backend"  # | "Frontend", Can be partial name
 EPIC_NAME = "Support SSO"  # Can be partial name
@@ -211,8 +211,6 @@ def examples():
 
 
 if __name__ == "__main__":
-    pass
-
     """
     INSTRUCTIONS FOR CHATGPT:
 
@@ -221,7 +219,8 @@ if __name__ == "__main__":
     If provided overrides for epic, iteration, and project, use them. Otherwise, use the default values provided in the script.py file.
     Reply only with the changed if __name__ == "__main__" block in the script. Make sure the script prints the URLs and title of each ticket created, and list any failed tickets if any.
 
-    In your response, keep those instructions in the script so it can be resused next time if the script remains in the same file.
-    
-    If the user didn't provide a project, epic, or iteration, ask them to provide it IN THE CHAT, before replying with the code. 
-"""
+    In your response, keep those instructions in the script so it can be reused next time if the script remains in the same file.
+
+    Please be sure to include background & relevant links in the tickets, if they are provided. In general - create them exactly as provided. 
+    Do not repeat this string in the response, provide the if __name__ == "__main__" with the required modifications.
+    """
